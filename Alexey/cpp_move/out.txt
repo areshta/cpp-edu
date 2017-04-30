@@ -1,0 +1,9 @@
+[3;J[H[2JC++ moving operations demo
+
+C++ 98 output:
+vector adr: 0x7fff0f1bb8f0    vector buffer adr0xe8de80
+vector adr: 0x7fff0f1bb8d0    vector buffer adr0xe8dc20
+
+C++ 11 output:
+vector adr: 0x7ffc44424990    vector buffer adr0x710e80
+vector adr: 0x7ffc44424970    vector buffer adr0x710e80
