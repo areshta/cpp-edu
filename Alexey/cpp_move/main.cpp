@@ -2,7 +2,7 @@
 // Old c++ will return the vector by value
 // C++11/14/17 will use move operation
 // As result address of the vector buffer will be the same in main() and f()
-// so, there will not coping of vector data, but owner vector will be changed
+// so, there will not coping of vector data, but an owner of the vector will be changed
 
 #include <iostream>
 #include <vector>
