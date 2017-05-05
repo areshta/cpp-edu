@@ -1,0 +1,9 @@
+===== Begin ======
+Constructor a glob
+Constructor a auto
+Constructor a static
+Constructor a unique_ptr
+Destructor a unique_ptr
+Destructor a auto
+Destructor a static
+Destructor a glob
