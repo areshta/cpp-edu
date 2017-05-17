@@ -2,6 +2,7 @@
 #define DIALOG_H
 
 #include <QDialog>
+#include <QEvent>
 
 namespace Ui {
 class Dialog;
@@ -16,6 +17,17 @@ public:
     ~Dialog();
 
 private:
+
+    bool eventFilter(QObject *object, QEvent *e);
+    void paintEvent(QPaintEvent *);
+
+    int mX=50;
+    int mY=50;
+    int mW=100;
+    int mH=10;
+    int dX=5;
+    int dY=5;
+
     Ui::Dialog *ui;
 };
 
