@@ -41,7 +41,7 @@ public:
 private:
 	string mSomeText;
 	const int mSomeValue = 1;
-	const static mSomeStaticValue = 2;
+	const static int mSomeStaticValue = 2;
 };
 
 
