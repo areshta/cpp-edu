@@ -32,7 +32,14 @@ do
 
 		# g++ #
 		echo >> $LOGFILE
-		g++ -std=c++11 -Weffc++ $MAINF -o $OUTDIR/$FNAME 1>> $LOGFILE 2>> $LOGFILE
+		g++ -std=c++11 -Weffc++ $RDIR/* -o $OUTDIR/$FNAME 1>> $LOGFILE 2>> $LOGFILE
 		
 	done
 done
+
+echo "======================================================================================="
+cat $LOGFILE
+echo "======================================================================================="
+
+echo "Output folder: $OUTDIR"
+echo "Log file: $LOGFILE"
