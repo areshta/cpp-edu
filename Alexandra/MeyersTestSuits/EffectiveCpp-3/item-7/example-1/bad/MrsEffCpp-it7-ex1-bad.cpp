@@ -27,5 +27,7 @@ int main()
 	{
 		delete someVect[i];
 	}
-	
+	Child1 a;
+	Child1 b(a);
+	cout << "Message" << endl;
 }

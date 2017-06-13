@@ -25,6 +25,8 @@ class Child1: public SomeBase
 {
 public:
 	Child1();
+	Child1(const Child1 &obj);
+	const Child1& operator=(const Child1 &obj);
 	~Child1();
 private:
 	char* mpStr = nullptr;
@@ -34,6 +36,8 @@ class Child2: public SomeBase
 {
 public:
 	Child2();
+	Child2(const Child2 &obj);
+	const Child2& operator=(const Child2 &obj);
 	~Child2();
 private:
 	char* mpStr = nullptr;
