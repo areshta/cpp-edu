@@ -1,0 +1,1 @@
+sbattle console example
