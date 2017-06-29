@@ -111,22 +111,31 @@ CChess::~CChess()
 
 // --------------------------------------------------------
 
-BtView::BtView(QObject *parent) : QObject(parent)
+BtView::BtView()
 {
     mBotChess.Init( QPoint(30,30), QSize(10,10) );
+    mObjects.push_back(& mBotChess);
+
     mPlayerChess.Init( QPoint(280 ,30), QSize(10,10) );
+    mObjects.push_back(& mPlayerChess);
 }
 
 void BtView::Draw(QPainter& painter)
 {
-    mBotChess.Draw(painter);
-    mPlayerChess.Draw(painter);
+    for(auto p: mObjects)
+    {
+        p->Draw(painter);
+    }
 }
 
 bool BtView::OnMouseMove(QPoint mousePt)
 {
-    bool bBotMs = mBotChess.OnMouseMove(mousePt);
-    bool bPlayerMs = mPlayerChess.OnMouseMove(mousePt);
+    bool bRet = false;
+    for(auto p: mObjects)
+    {
+         bRet =  bRet || p->OnMouseMove(mousePt);
+    }
 
-    return bBotMs || bPlayerMs;
+    // return true if mouse present at least on one object
+    return bRet;
 }

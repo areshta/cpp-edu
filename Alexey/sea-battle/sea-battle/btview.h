@@ -68,15 +68,17 @@ private:
 
 // ----------------------------------------------------
 
-class BtView : public QObject
+class BtView
 {
-    Q_OBJECT
 public:
-    explicit BtView(QObject *parent = nullptr);
+    BtView();
     void Draw(QPainter& painter);
     bool OnMouseMove(QPoint mousePt);
 
 private:
+
+    vector< CDrawObj* > mObjects; // is not pointers owner! No delete!
+
     CChess mBotChess;
     CChess mPlayerChess;
 
