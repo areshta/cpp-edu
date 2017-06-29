@@ -32,7 +32,8 @@ SOURCES += \
 HEADERS += \
         dialog.h \
     btview.h \
-    btmodel.h
+    btmodel.h \
+    btglobal.h
 
 FORMS += \
         dialog.ui
