@@ -23,7 +23,7 @@ public:
     virtual ~CDrawObj();
 protected:
     QPoint mPt;
-    QSize mSz; //pixels for CCell, lines and calls for CChess
+    QSize mSz; //pixels for CCell, lines and collumns for CChess
 };
 
 //-----------------------------------------
