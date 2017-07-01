@@ -20,12 +20,7 @@ CShip::CShip(QPoint point, int len, DerectionType dir):
     CModelObj{point},
     mLen {len},
     mDir {dir}
-{
-    mCells.resize(len);
-    for(auto &i: mCells)
-    {
-        i = CellType::shipOK;
-    }
+{   
 }
 
 //------------------------------------------------
@@ -42,12 +37,12 @@ BtModel::BtModel()
     }
 }
 
-const BtModel::FieldArray& BtModel::GetBotField() const
+const FieldArray& BtModel::GetBotField() const
 {
     return mBotField;
 }
 
-const BtModel::FieldArray& BtModel::GetmPleyerField() const
+const FieldArray& BtModel::GetPleyerField() const
 {
     return  mPleyerField;
 }

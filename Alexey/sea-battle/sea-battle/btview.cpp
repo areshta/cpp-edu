@@ -16,8 +16,18 @@ CDrawObj::~CDrawObj()
 
 CCell::CCell(QPoint pt, QSize sz):
 CDrawObj(pt,sz),
-mUnderMouse {false}
+mUnderMouse {false},
+mType {CellType::non}
 {
+}
+
+void CCell::SetType(CellType type)
+{
+    mType = type;
+}
+inline CellType CCell::GetType() const
+{
+    return mType;
 }
 
 void CCell::Draw(QPainter& painter) const
@@ -52,8 +62,9 @@ CCell::~CCell()
 }
 //------------------------------------------
 
-CChess::CChess():
-CDrawObj()
+CChess::CChess(const FieldArray fieldArray):
+  CDrawObj(),
+  mFieldArray(fieldArray)
 {
 
 }
@@ -73,11 +84,23 @@ void CChess::Init(QPoint pt, ChessSize lineColCount)
             mChess[i].push_back( unique_ptr <CCell> ( new CCell( QPoint(cellPt) ) ) );
         }
     }
+
+    SetCells();
 }
 
+void CChess::SetCells()
+{
+    for( int i = 0; i < mSz.height(); ++i )
+    {
+        for(int j = 0; j < mSz.width(); ++j )
+        {
+            dynamic_cast<CCell *>(mChess[i][j].get())->SetType(CellType::water);
+        }
+    }
+}
 
 void CChess::Draw(QPainter& painter) const
-{
+{    
     for( int i = 0; i < mSz.height(); ++i )
     {
         for(int j = 0; j < mSz.width(); ++j )
@@ -95,9 +118,10 @@ bool CChess::OnMouseMove(QPoint mousePt)
     {
         for(int j = 0; j < mSz.width(); ++j )
         {
-            if( mChess[i][j]->OnMouseMove(mousePt) )
+            if( mChess[i][j]->OnMouseMove(mousePt) == true )
             {
                 bRet = true;
+                break;
             }
         }
     }
@@ -111,7 +135,10 @@ CChess::~CChess()
 
 // --------------------------------------------------------
 
-BtView::BtView()
+BtView::BtView(const BtModel &btModel):
+    mBtModel {btModel},
+    mBotChess {btModel.GetBotField()},
+    mPlayerChess {btModel.GetPleyerField()}
 {
     mBotChess.Init( QPoint(30,30), QSize(10,10) );
     mObjects.push_back(& mBotChess);

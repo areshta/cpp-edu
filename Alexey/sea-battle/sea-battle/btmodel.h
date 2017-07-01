@@ -7,15 +7,7 @@
 
 using namespace std;
 
-enum class CellType
-{
-    water,
-    shipOK,
-    shipBad,
-    shipKilled,
-    out,
-    marked
-};
+
 
 enum class DerectionType
 {
@@ -50,7 +42,6 @@ public:
  private:
     int mLen;
     DerectionType mDir;
-    vector<CellType> mCells;
 };
 
 //-------------------------
@@ -58,11 +49,11 @@ public:
 class BtModel
 {
 public:
-    using FieldArray = array<array<CellType, GConst::ChessSz>, GConst::ChessSz>;
+
     BtModel();
 
     const FieldArray& GetBotField() const;
-    const FieldArray& GetmPleyerField() const;
+    const FieldArray& GetPleyerField() const;
 
 private:
     FieldArray mBotField;

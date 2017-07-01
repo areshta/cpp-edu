@@ -8,7 +8,8 @@
 
 Dialog::Dialog(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::Dialog)
+    ui(new Ui::Dialog),
+    mBtVew(mBtModel)
 {
     ui->setupUi(this);   
     this->setFixedSize(GConst::Begin*3 + (GConst::CellSz+GConst::Margin) * GConst::ChessSz *2 ,
