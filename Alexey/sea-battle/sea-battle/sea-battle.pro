@@ -26,11 +26,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         dialog.cpp \
-    btview.cpp
+    btview.cpp \
+    btmodel.cpp
 
 HEADERS += \
         dialog.h \
-    btview.h
+    btview.h \
+    btmodel.h \
+    btglobal.h
 
 FORMS += \
         dialog.ui

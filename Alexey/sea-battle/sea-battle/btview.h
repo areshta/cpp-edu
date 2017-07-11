@@ -7,16 +7,12 @@
 #include <QSize>
 #include <vector>
 #include <memory>
+#include "btglobal.h"
+#include "btmodel.h"
 
 using namespace std;
 
-struct GConst
-{
-    const static int ChessSz = 10;
-    const static int CellSz = 20;
-    const static int Margin = 2;
-    const static int Begin  = 30;
-};
+
 
 // ----------------------------------------------------------------
 class CDrawObj
@@ -28,7 +24,7 @@ public:
     virtual ~CDrawObj();
 protected:
     QPoint mPt;
-    QSize mSz; //pixels for CCell, lines and calls for CChess
+    QSize mSz; //pixels for CCell, lines and collumns for CChess
 };
 
 //-----------------------------------------
@@ -38,6 +34,9 @@ class CCell: public  CDrawObj
 public:
     explicit CCell(QPoint pt = QPoint(GConst::CellSz, GConst::CellSz), QSize sz = QSize (GConst::CellSz, GConst::CellSz) );
 
+    inline void SetType(CellType type);
+    inline CellType GetType() const;
+
     void Draw(QPainter& painter) const override;
     virtual bool OnMouseMove(QPoint mousPt) override;
 
@@ -45,6 +44,7 @@ public:
 
 private:
     bool mUnderMouse;
+    CellType mType;
 };
 
 //---------------------------------------------
@@ -54,8 +54,9 @@ class CChess: public  CDrawObj
 {
 public:
     using ChessSize = QSize;
-    explicit CChess( );
+    explicit CChess( const FieldArray fieldArray );
     void Init(QPoint pt = QPoint(GConst::Begin, GConst::Begin), ChessSize lineColCount = ChessSize(GConst::ChessSz,GConst::ChessSz));
+    void SetCells();
     void Draw(QPainter& painter) const override;
     virtual bool OnMouseMove(QPoint mousPt) override;
     ~CChess() override;
@@ -64,19 +65,23 @@ private:
     using CellMatrix = vector< vector< unique_ptr< CDrawObj > > >;
 
     CellMatrix mChess;
+    const FieldArray& mFieldArray;
 };
 
 // ----------------------------------------------------
 
-class BtView : public QObject
+class BtView
 {
-    Q_OBJECT
 public:
-    explicit BtView(QObject *parent = nullptr);
+    BtView(const BtModel& btModel);
     void Draw(QPainter& painter);
     bool OnMouseMove(QPoint mousePt);
 
 private:
+
+    vector< CDrawObj* > mObjects; // is not pointers owner! No delete!
+
+    const BtModel& mBtModel;
     CChess mBotChess;
     CChess mPlayerChess;
 

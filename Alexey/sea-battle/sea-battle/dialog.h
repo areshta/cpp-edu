@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "btview.h"
+#include "btmodel.h"
 
 namespace Ui {
 class Dialog;
@@ -22,7 +23,8 @@ private:
 
     Ui::Dialog *ui;
 
-    BtView mBtVew;
+    BtModel mBtModel;
+    BtView mBtVew;    
 };
 
 #endif // DIALOG_H
