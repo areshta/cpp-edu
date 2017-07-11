@@ -50,7 +50,7 @@ bool CCell::OnMouseMove(QPoint mousePt)
 CCell::~CCell()
 {
 }
-//------------------------------------------
+//------------------------------------------z
 
 CChess::CChess():
 CDrawObj()
