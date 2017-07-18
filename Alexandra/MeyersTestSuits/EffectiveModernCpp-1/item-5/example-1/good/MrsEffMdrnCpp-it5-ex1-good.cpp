@@ -7,7 +7,7 @@
 
 //Book:      Effective Modern C++. The first edition.
 //Item: #5.  Prefer auto to explicit type declarations.
-//Code type: bad
+//Code type: good
 
 #include <iostream>
 #include <vector>
@@ -20,11 +20,11 @@ int32_t main()
 
 	long int someValue = static_cast<unsigned>(-1) +1L;
 
-	unsigned int badValue = someValue; // danger: can be overfload
+	// danger! can be overfload: unsigned int badValue = someValue; 
 
-	// much better: auto goodValue = someValue;
+	auto goodValue = someValue; // safely
 
-	cout << "Bad Value = " << badValue << endl;
+	cout << "Good Value = " << goodValue << endl;
 
 	return 0;
 
