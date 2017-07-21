@@ -19,7 +19,7 @@ class MyString: public string
 {
 public:
     using string::string ;
-	~MyString () { cout << "destructor: " << *(static_cast<string *>(this)) << endl; } 
+	~MyString () { cout << "destructor: " << *this << endl; } 
 };
 
 
@@ -28,7 +28,7 @@ class hashing_func {
         unsigned long operator()(const MyString& key) const 
 		{
 			std::hash<std::string> hash_fn;
-			size_t hash = hash_fn(*(static_cast<const string *>(&key)));
+			size_t hash = hash_fn(key);
             return hash;
         }
 };
@@ -38,7 +38,7 @@ class key_equal_fn {
         bool operator()(const MyString& t1, const MyString& t2) const 
 		{
 			std::equal_to<std::string> eq_fn;
-			return eq_fn (*(static_cast<const string *>(&t1)), *(static_cast<const string *>(&t2)));
+			return eq_fn (t1,t2);
         }
 };
 
