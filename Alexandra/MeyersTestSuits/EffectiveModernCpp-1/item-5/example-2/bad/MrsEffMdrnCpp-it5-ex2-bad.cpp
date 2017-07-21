@@ -27,7 +27,7 @@ class hashing_func {
     public:
         unsigned long operator()(const MyString& key) const 
 		{
-			std::hash<std::string> hash_fn;
+			hash<string> hash_fn;
 			size_t hash = hash_fn(key);
             return hash;
         }
@@ -37,7 +37,7 @@ class key_equal_fn {
     public:
         bool operator()(const MyString& t1, const MyString& t2) const 
 		{
-			std::equal_to<std::string> eq_fn;
+			equal_to<string> eq_fn;
 			return eq_fn (t1,t2);
         }
 };
@@ -47,11 +47,31 @@ int32_t main()
 {
 	cout << "Effective Modern C++. The first edition. Item 5. Bad code." << endl;
 
-	unordered_map<MyString, int, hashing_func, key_equal_fn> someMap;
+	unordered_map<MyString, int32_t, hashing_func, key_equal_fn> someMap;
 	MyString s1 {"one"};
 	MyString s2 {"two"};
 	someMap[s1] = 1;
 	someMap[s2] = 2;
+	
+	// using of wrong pair type cause creating additional temprorary object!
+	for(const pair<MyString, int32_t>& p: someMap)
+	{
+		cout << p.second << endl;
+	}
+
+
+/*  the pair type is OK but looks heavy 	
+	for(pair<const MyString, int32_t>& p: someMap)
+	{
+		cout << p.second << endl;
+	}*/
+
+/*  much better 	
+	for(auto& p: someMap)
+	{
+		cout << p.second << endl;
+	}
+*/
 
 	return 0;
 
