@@ -6,7 +6,7 @@
 /***************************************************************************************************/
 
 //Book:      Effective Modern C++. The first edition.
-//Item: #5.  Exampe 3. auto + hiden proxy class.
+//Item: #6.  Exampe 1. auto + hiden proxy class.
 //Code type: bad
 
 #include <iostream>
@@ -35,7 +35,7 @@ const void process(SomeClass sc, bool b)
 }
 int32_t main()
 {
-	cout << "Effective Modern C++. The first edition. Item 5. Example 3: auto + hiden proxy class. Bad code." << endl;
+	cout << "Effective Modern C++. The first edition. Item 6. Example 1: auto + hiden proxy class. Bad code." << endl;
 	
 	SomeClass sc;
 

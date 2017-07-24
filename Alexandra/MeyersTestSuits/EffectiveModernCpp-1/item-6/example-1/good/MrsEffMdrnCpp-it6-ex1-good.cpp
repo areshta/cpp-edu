@@ -12,7 +12,7 @@
 /***************************************************************************************************/
 
 //Book:      Effective Modern C++. The first edition.
-//Item: #5.  Exampe 3. auto + hiden proxy class.
+//Item: #6.  Exampe 1. auto + hiden proxy class.
 //Code type: good
 
 #include <iostream>
@@ -41,12 +41,12 @@ const void process(SomeClass sc, bool b)
 }
 int32_t main()
 {
-	cout << "Effective Modern C++. The first edition. Item 5. Example 3: auto + hiden proxy class. Bad code." << endl;
+	cout << "Effective Modern C++. The first edition. Item 6. Example 1: auto + hiden proxy class. Bad code." << endl;
 	
 	SomeClass sc;
 
-	bool someFeature5 = feachers(sc)[5]; // auto is bad, bool is OK
-	bool someFeature1 = feachers(sc)[1]; // auto is bad, bool is OK
+	auto someFeature5 = static_cast<bool>(feachers(sc)[5]); // the explicit type initialaizer idiom using
+	auto someFeature1 = static_cast<bool>(feachers(sc)[1]); // the explicit type initialaizer idiom using
 	process(sc, someFeature1);
 	process(sc, someFeature5); 
 
