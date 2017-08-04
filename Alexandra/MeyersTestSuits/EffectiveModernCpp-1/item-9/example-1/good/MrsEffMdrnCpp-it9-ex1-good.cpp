@@ -7,7 +7,7 @@
 
 //Book:      Effective Modern C++. The first edition.
 //Item: #8.  Exampe 1. Prefer nullptr to 0 and NULL
-//Code type: bad
+//Code type: good
 
 #include <iostream>
 #include <vector>
@@ -18,7 +18,7 @@ void someOldFun(const char* const pS)
 {
 	static uint32_t counter = 0;
 
-	if( pS != NULL) // bad: nullptr must be used
+	if( pS != nullptr) // OK
 	{
 		cout << pS << endl;
 	}
@@ -33,8 +33,7 @@ int32_t main()
 	cout << "Effective Modern C++. The first edition. Item 8. Example 1: Prefer nullptr to 0 and NULL. Bad code." << endl;
 
 	someOldFun("Normal string");
-	someOldFun( 0 ); 		// bad: nullptr must be used
-	someOldFun( NULL );		// bad: nullptr must be used
-	
+	someOldFun( nullptr );	// OK
+
 	return 0;
 }

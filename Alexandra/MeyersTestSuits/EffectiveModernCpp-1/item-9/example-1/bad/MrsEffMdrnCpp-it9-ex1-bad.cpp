@@ -6,35 +6,43 @@
 /***************************************************************************************************/
 
 //Book:      Effective Modern C++. The first edition.
-//Item: #8.  Exampe 1. Prefer nullptr to 0 and NULL
+//Item: #9.  Exampe 1. Prefer alias declarations to typedef's
 //Code type: bad
 
 #include <iostream>
-#include <vector>
+#include <string>
+#include <memory>
 
 using namespace std;
 
-void someOldFun(const char* const pS)
+template <class T>
+struct MyAllocator: public allocator<T>
 {
-	static uint32_t counter = 0;
+	using allocator<T>::allocator;
+	~MyAllocator()
+	{
+		cout << "My allocator is destroid!" << endl;
+    }
+};
 
-	if( pS != NULL) // bad: nullptr must be used
-	{
-		cout << pS << endl;
-	}
-	else
-	{
-		cout << "Null pointer detected: "<< static_cast<const void* const>(pS) << endl;		
-	}
+
+typedef void (*SF)(int, const string&);
+
+void SomeFun(int someInt, const string& s)
+{
+	cout << s << " " << someInt << endl;
 }
 
 int32_t main()
 {
-	cout << "Effective Modern C++. The first edition. Item 8. Example 1: Prefer nullptr to 0 and NULL. Bad code." << endl;
+	// fuction alias example
+	cout << "Effective Modern C++. The first edition. Item 9. Example 1: Prefer alias declarations to typedef's. Bad code." << endl;
 
-	someOldFun("Normal string");
-	someOldFun( 0 ); 		// bad: nullptr must be used
-	someOldFun( NULL );		// bad: nullptr must be used
-	
+	SF sf = SomeFun;
+	sf(5, "Some out");
+
+	// allocator example
+	MyAllocator<int> a;
+
 	return 0;
 }
