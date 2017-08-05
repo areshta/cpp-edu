@@ -6,35 +6,47 @@
 /***************************************************************************************************/
 
 //Book:      Effective Modern C++. The first edition.
-//Item: #8.  Exampe 1. Prefer nullptr to 0 and NULL
+//Item: #9.  Exampe 2. Prefer alias declarations to typedefs
 //Code type: bad
 
 #include <iostream>
 #include <vector>
+#include <memory>
 
 using namespace std;
 
-void someOldFun(const char* const pS)
+template<typename T>
+class MyAllocator: public allocator<T>
 {
-	static uint32_t counter = 0;
+public:
+	using allocator<T>::allocator;
+	~MyAllocator()
+	{
+		cout << "My allocator destructor" << endl;
+	}
+};
 
-	if( pS != NULL) // bad: nullptr must be used
-	{
-		cout << pS << endl;
-	}
-	else
-	{
-		cout << "Null pointer detected: "<< static_cast<const void* const>(pS) << endl;		
-	}
-}
+
+template<typename T>
+struct MyAllocVector
+{
+	typedef vector<T, MyAllocator<T> > type; // bad: 'using' is better!
+};
+
 
 int32_t main()
 {
-	cout << "Effective Modern C++. The first edition. Item 8. Example 1: Prefer nullptr to 0 and NULL. Bad code." << endl;
-
-	someOldFun("Normal string");
-	someOldFun( 0 ); 		// bad: nullptr must be used
-	someOldFun( NULL );		// bad: nullptr must be used
+	cout << "Effective Modern C++. The first edition. Item 9. Exampe 2. Prefer alias declarations to typedefs. Bad code." << endl;
+	MyAllocator<int> my_a; //verifying customizing allocator class
 	
+	MyAllocVector<int>::type my_v(2); //Interesting: without size presetting the allocator is not called.
+	my_v[0]=10;
+	my_v[1]=-999;
+
+	for( auto i: my_v)
+	{
+		cout << i << endl;
+	}
+
 	return 0;
 }
