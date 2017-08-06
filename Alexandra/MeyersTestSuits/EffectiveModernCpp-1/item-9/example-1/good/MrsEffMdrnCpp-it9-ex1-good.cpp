@@ -6,34 +6,32 @@
 /***************************************************************************************************/
 
 //Book:      Effective Modern C++. The first edition.
-//Item: #8.  Exampe 1. Prefer nullptr to 0 and NULL
+//Item: #9.  Exampe 1. Prefer alias declarations to typedef's
 //Code type: good
 
 #include <iostream>
-#include <vector>
+#include <string>
+#include <memory>
 
 using namespace std;
 
-void someOldFun(const char* const pS)
-{
-	static uint32_t counter = 0;
+using  SomeSize = int; // OK
 
-	if( pS != nullptr) // OK
-	{
-		cout << pS << endl;
-	}
-	else
-	{
-		cout << "Null pointer detected: "<< static_cast<const void* const>(pS) << endl;		
-	}
+using SF = void (*) (int, const string&); // OK
+
+void SomeFun(int someInt, const string& s)
+{
+	cout << s << " " << someInt << endl;
 }
 
 int32_t main()
 {
-	cout << "Effective Modern C++. The first edition. Item 8. Example 1: Prefer nullptr to 0 and NULL. Bad code." << endl;
+	// function alias example
+	cout << "Effective Modern C++. The first edition. Item 9. Example 1: Prefer alias declarations to typedef's. Good code." << endl;
 
-	someOldFun("Normal string");
-	someOldFun( nullptr );	// OK
+	SF sf = SomeFun;
+	SomeSize ss = 5;
+	sf(ss, "Some out");
 
 	return 0;
 }

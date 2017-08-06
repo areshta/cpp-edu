@@ -15,18 +15,9 @@
 
 using namespace std;
 
-template <class T>
-struct MyAllocator: public allocator<T>
-{
-	using allocator<T>::allocator;
-	~MyAllocator()
-	{
-		cout << "My allocator is destroid!" << endl;
-    }
-};
+typedef int SomeSize; // bad, "using" is better
 
-
-typedef void (*SF)(int, const string&);
+typedef void (*SF)(int, const string&); // bad, "using" is better
 
 void SomeFun(int someInt, const string& s)
 {
@@ -35,14 +26,12 @@ void SomeFun(int someInt, const string& s)
 
 int32_t main()
 {
-	// fuction alias example
+	// function alias example
 	cout << "Effective Modern C++. The first edition. Item 9. Example 1: Prefer alias declarations to typedef's. Bad code." << endl;
 
 	SF sf = SomeFun;
-	sf(5, "Some out");
-
-	// allocator example
-	MyAllocator<int> a;
+	SomeSize ss = 5;
+	sf(ss, "Some out");
 
 	return 0;
 }
