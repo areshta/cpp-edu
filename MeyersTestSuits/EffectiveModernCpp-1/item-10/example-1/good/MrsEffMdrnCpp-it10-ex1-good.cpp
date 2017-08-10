@@ -6,7 +6,7 @@
 /***************************************************************************************************/
 
 //Book:      Effective Modern C++. The first edition.
-//Item: #9.  Exampe 1. Prefer alias declarations to typedef's
+//Item: #10.  Example 1. Prefer scoped enums to unscoped enums
 //Code type: good
 
 #include <iostream>
@@ -15,23 +15,25 @@
 
 using namespace std;
 
-using  SomeSize = int; // OK
-
-using SF = void (*) (int, const string&); // OK
-
-void SomeFun(int someInt, const string& s)
-{
-	cout << s << " " << someInt << endl;
-}
-
 int32_t main()
 {
-	// function alias example
-	cout << "Effective Modern C++. The first edition. Item 9. Example 1: Prefer alias declarations to typedef's. Good code." << endl;
+	cout << "Effective Modern C++. The first edition. Item 10. Example 1. Prefer scoped enums to unscoped enums. Good code." << endl;
 
-	SF sf = SomeFun;
-	SomeSize ss = 5;
-	sf(ss, "Some out");
+	enum class SomeEnum { cat, dog, caw }; // OK
+
+/*
+	crazy code is not compiled
+	if ( dog < 1.77 ) //comparing dog with double!
+	{
+		cout << "Crazy code working" << endl;
+	} 
+*/
+
+	if ( static_cast<double>(SomeEnum::dog) < 1.77 ) //comparing dog with double!
+	{
+		cout << "Still crazy but such code difficult write by mistake. Probably there was some snse)" << endl;
+	} 
+
 
 	return 0;
 }
