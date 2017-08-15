@@ -19,8 +19,34 @@ const string sInfo =
 	" Code type:  good.                                             					\n\n" ;
 /*********************************************************************************************/
 
+class SomeSwapper
+{
+public:
+	static void swap(int &a, int &b) noexcept // OK
+	{
+		a+=b;
+		b=a-b;
+		a=a-b;
+	}	 
+};
+
+inline int DevByTwo(int a) noexcept // OK
+{
+	return a >> 1;
+}
+
+
 int32_t main()
 {
 	cout << sInfo << endl;
+
+	int a = 2;
+	int b = 1;
+	SomeSwapper::swap(a,b);
+
+	int c = DevByTwo(6);
+
+	cout <<"a,b,c : "<< a <<","<< b <<","<< c <<"."<< endl;	
+
 	return 0;
 }

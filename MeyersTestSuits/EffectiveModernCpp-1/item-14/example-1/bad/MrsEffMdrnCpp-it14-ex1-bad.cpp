@@ -8,6 +8,8 @@
 #include <iostream>
 #include <string>
 
+
+
 using namespace std;
 
 const string sInfo =
@@ -17,8 +19,34 @@ const string sInfo =
 	" Code type:  bad.                                             					\n\n" ;
 /*********************************************************************************************/
 
+class SomeSwapper
+{
+public:
+	static void swap(int &a, int &b) // bad. must be noexcept 
+	{
+		a+=b;
+		b=a-b;
+		a=a-b;
+	}	 
+};
+
+inline int DevByTwo(int a) // bad. must be noexcept
+{
+	return a >> 1;
+}
+
+
 int32_t main()
 {
 	cout << sInfo << endl;
+
+	int a = 2;
+	int b = 1;
+	SomeSwapper::swap(a,b);
+
+	int c = DevByTwo(6);
+
+	cout <<"a,b,c : "<< a <<","<< b <<","<< c <<"."<< endl;	
+
 	return 0;
 }
