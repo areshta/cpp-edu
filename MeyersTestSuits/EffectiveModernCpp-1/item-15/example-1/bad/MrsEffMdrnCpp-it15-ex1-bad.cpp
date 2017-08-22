@@ -18,9 +18,20 @@ const string sInfo =
 /*********************************************************************************************/
 ;
 
+using tmpr = double;
+
+tmpr CtoF(tmpr celsius) //bad. constexpr must be used
+{
+	return (celsius * 9.0) / 5.0 + 32.0;
+}
+
 int32_t main()
 {
 	cout << sInfo << endl;
+	
+	tmpr someTemperature =  100;
 
+	cout << "fahrenheit of zero celsius = " << CtoF(0.0) << endl;  // bad run-time using. build-time may be used instead
+	cout << "fahrenheit of " << someTemperature << " celsius = " << CtoF(someTemperature) << endl; // run-time using
 	return 0;
 }
