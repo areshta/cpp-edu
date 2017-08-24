@@ -9,8 +9,6 @@
 #include <string>
 #include <chrono>
 #include <thread>
-#include <vector>
-#include <cassert>
 #include <cstdlib>
 #include <mutex>
 
@@ -19,67 +17,55 @@ using namespace std;
 const string sInfo =
 /*********************************************************************************************/
 	" Book:       Effective Modern C++. The first edition.          					\n"
-	" Item: #16.  Example 1. Make const member functions thread safe.                           \n"
+	" Item: #16.  Example 2. Make const member functions thread safe.                           \n"
 	" Code type:  good.                                             					  \n\n" 
 /*********************************************************************************************/
 ;
 
 const size_t duration = 10;
-using Results = vector<size_t>;
 
 class SomeObjectWithCash
 {
 
 public:
-	void longCalculate(int inValue)	const 
+	int longCalculate(int inValue) const
 	{
-		this_thread::sleep_for(chrono::milliseconds(100));
-		mvResults.clear();
-		this_thread::sleep_for(chrono::milliseconds(100));
+		int res {0}; 
+
 		//emulation of some long calculation
 		for(size_t i=0; i < abs(inValue); ++i)
-		{			
-			mvResults.push_back(i*5);
+		{		
+			res += i*5;	
 			this_thread::sleep_for(chrono::milliseconds(20));
 		}
+		return res;
 	}
-	Results getResults(int inValue) const 
-	{		
-		lock_guard<mutex> g(m); //OK. If you remove it the program will be crashed by assert 
+
+	int getResults(int inValue) const
+	{	
+		lock_guard<mutex> guard(m); // OK.	
 		if( inValue == mOldIntValue )
 		{
-			//additional validation: is all OK during multi-threading access.
-			assert( abs(inValue) ==  mvResults.size() );
-			cout << "cache is used" << endl;
-			return mvResults;
+			cout << "cash is used" << endl;
+			return mSomeIntRes;
 		}
 		else
 		{
-			longCalculate(inValue);
+			auto val1 = longCalculate(inValue);
+			auto val2 = longCalculate(inValue*2);
+			mSomeIntRes = val1 + val2;
 			mOldIntValue = inValue;
 			cout << "new values are calculated" << endl;
-			return mvResults;
+			return mSomeIntRes;
 		}
 	}
 private:
-	mutable mutex m;
-	mutable int mOldIntValue;	
-	mutable Results mvResults {}; 
+	mutable mutex m; //OK
+	mutable int mOldIntValue{-1};	//using atomic twice is bad. t is working but not effective
+	mutable int mSomeIntRes {0};	//
 };
 
 SomeObjectWithCash sOWC;
-
-void Output(const Results& vr)
-{
-	cout << "Some results" << " ";
-	for (auto i: vr)
-	{
-		cout << i << " " ;
-	}
-	cout << endl;
-}
-
-
 
 template<int ID>
 void secondary() 
@@ -90,7 +76,7 @@ void secondary()
 		cout << "therad " << ID << ": " << i << endl;
 		this_thread::sleep_for(chrono::milliseconds(50));
 		
-		Output( sOWC.getResults( 10*(1+rand()%2) ) ); // calling of global object with long operation
+		cout << "Some value:" << sOWC.getResults( 10*(1+rand()%2) ) <<endl; // calling of global object with long operation
 	}
 }
 

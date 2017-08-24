@@ -20,7 +20,7 @@ const string sInfo =
 /*********************************************************************************************/
 	" Book:       Effective Modern C++. The first edition.          					\n"
 	" Item: #16.  Example 1. Make const member functions thread safe.                           \n"
-	" Code type:  good.                                             					  \n\n" 
+	" Code type:  bad.                                             					  \n\n" 
 /*********************************************************************************************/
 ;
 
@@ -31,7 +31,7 @@ class SomeObjectWithCash
 {
 
 public:
-	const void longCalculate(int inValue)	
+	void longCalculate(int inValue) const	
 	{
 		this_thread::sleep_for(chrono::milliseconds(100));
 		mvResults.clear();
@@ -43,14 +43,14 @@ public:
 			this_thread::sleep_for(chrono::milliseconds(20));
 		}
 	}
-	const Results getResults(int inValue)
+	Results getResults(int inValue) const
 	{		
-		// bad. Mhe program will be creshed by assert. Mutex guard must be here: lock_guard<mutex> g(m);
+		// bad. Mhe program will be crashed by assert. Mutex guard must be here: lock_guard<mutex> g(m);
 		if( inValue == mOldIntValue )
 		{
-			//additional validation: is all OK during muti-threading access.
+			//additional validation: is all OK during multi-threading access.
 			assert( abs(inValue) ==  mvResults.size() );
-			cout << "cash is used" << endl;
+			cout << "cache is used" << endl;
 			return mvResults;
 		}
 		else
@@ -62,7 +62,7 @@ public:
 		}
 	}
 private:
-	mutable mutex m;
+	//mutable mutex m; // bad: mutex must be used
 	mutable int mOldIntValue;	
 	mutable Results mvResults {}; 
 };
