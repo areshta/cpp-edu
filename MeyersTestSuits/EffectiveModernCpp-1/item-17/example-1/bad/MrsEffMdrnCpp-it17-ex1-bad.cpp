@@ -7,31 +7,67 @@
 
 #include <iostream>
 #include <string>
+#include <map>
+#include <sstream>
 
 using namespace std;
 
 const string sInfo =
 /*********************************************************************************************/
-	" Book:       Effective Modern C++. The first edition.          					\n"
-	" Item: #15.  Example 1. Use constexpr whenever possible.                           \n"
-	" Code type:  bad.                                             					  \n\n" 
+	" Book:       Effective Modern C++. The first edition.                     			\n"
+	" Item: #17.  Example 1. The special member functions generation issue.             \n"
+	" Code type:  bad.                                             			 	  \n\n" 
 /*********************************************************************************************/
 ;
 
-using tmpr = double;
-
-tmpr CtoF(tmpr celsius) //bad. constexpr must be used
+// MyMap is created to show of using constructors
+template<typename Key, typename Value>
+class MyMap: public map<Key, Value>
 {
-	return (celsius * 9.0) / 5.0 + 32.0;
-}
+public:
+	MyMap():map<Key, Value>()
+	{
+		cout << "MyMap default constructor" << endl;
+	}
+	MyMap(const MyMap& m): map<Key, Value>(m)
+	{
+		cout << "MyMap coping constructor" << endl;
+	}	
+	MyMap(const MyMap&& m): map<Key, Value>(m)
+	{
+		cout << "MyMap moving constructor" << endl;
+	}	
+};
+
+
+class SomeStringTable
+{
+public:
+	SomeStringTable()
+	{
+		string s;
+		for(int i=0; i<10; i++)
+		{
+			s = "String #" + to_string(i);
+			mTable[i] = s;
+		}
+		for( auto i: mTable)
+		{
+			cout << i.second << endl;
+		} 
+	}
+	~SomeStringTable(){}  // Bad. As destructor declared default copy constructor wll be use instead moving!
+
+private:
+	MyMap<int, string> mTable;
+};
 
 int32_t main()
 {
 	cout << sInfo << endl;
-	
-	tmpr someTemperature =  100;
 
-	cout << "fahrenheit of zero celsius = " << CtoF(0.0) << endl;  // bad run-time using. build-time may be used instead
-	cout << "fahrenheit of " << someTemperature << " celsius = " << CtoF(someTemperature) << endl; // run-time using
+	SomeStringTable t1;
+	auto t2 = move(t1); // Bad. Coping constructor will be used!
+		
 	return 0;
 }

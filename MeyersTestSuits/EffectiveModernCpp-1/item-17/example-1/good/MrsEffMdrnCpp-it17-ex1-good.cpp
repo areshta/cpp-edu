@@ -20,6 +20,25 @@ const string sInfo =
 /*********************************************************************************************/
 ;
 
+// MyMap is created to show of using constructors
+template<typename Key, typename Value>
+class MyMap: public map<Key, Value>
+{
+public:
+	MyMap():map<Key, Value>()
+	{
+		cout << "MyMap default constructor" << endl;
+	}
+	MyMap(const MyMap& m): map<Key, Value>(m)
+	{
+		cout << "MyMap coping constructor" << endl;
+	}	
+	MyMap(const MyMap&& m): map<Key, Value>(m)
+	{
+		cout << "MyMap moving constructor" << endl;
+	}	
+};
+
 
 class SomeStringTable
 {
@@ -30,7 +49,6 @@ public:
 		for(int i=0; i<10; i++)
 		{
 			s = "String #" + to_string(i);
-			//cout << s << endl;
 			mTable[i] = s;
 		}
 		for( auto i: mTable)
@@ -38,16 +56,19 @@ public:
 			cout << i.second << endl;
 		} 
 	}
+	//~SomeStringTable(){}  // OK. While is used default destructor, default moving constructor is used too
+							// If you uncomment destructor, defoult coping constructor will used instead moving
 
 private:
-	map<int, string> mTable;
+	MyMap<int, string> mTable;
 };
 
 int32_t main()
 {
 	cout << sInfo << endl;
 
-	SomeStringTable sTable;
+	SomeStringTable t1;
+	auto t2 = move(t1); // moving ... or copyng if descructor is declared
 		
 	return 0;
 }
