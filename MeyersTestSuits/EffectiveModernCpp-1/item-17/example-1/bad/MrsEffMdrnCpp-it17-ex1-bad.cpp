@@ -16,7 +16,7 @@ const string sInfo =
 /*********************************************************************************************/
 	" Book:       Effective Modern C++. The first edition.                     			\n"
 	" Item: #17.  Example 1. The special member functions generation issue.             \n"
-	" Code type:  bad.                                             			 	  \n\n" 
+	" Code type:  bad.                                             			 	        \n\n" 
 /*********************************************************************************************/
 ;
 

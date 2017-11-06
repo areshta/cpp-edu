@@ -68,7 +68,7 @@ int32_t main()
 	cout << sInfo << endl;
 
 	SomeStringTable t1;
-	auto t2 = move(t1); // moving ... or copyng if descructor is declared
+	auto t2 = move(t1); // moving ... or copyng if destcructor is declared
 		
 	return 0;
 }
