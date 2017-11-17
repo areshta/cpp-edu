@@ -9,44 +9,30 @@
 
 #include <iostream>
 #include <string>
-#include <memory>
 
 using std::cout;
 using std::endl;
 using std::string;
-using std::shared_ptr;
-using std::make_unique;
-using std::make_shared;
+
+#include "SomeClass.h"
+
 
 const string sInfo =
 /*****************************************************************************************************/
 	" Book:       Effective Modern C++. The first edition.                     			            \n"
-	" Item: #21.  Example 1. Prefer std::make_unique and std::make_shared to direct use of new.	    \n"
-	" Code type:  good.                                               			 	              \n\n" 
+	" Item: #22.  Example 1. When using the Pimpl Idiom, define special "
+				  "member functions in the implementation file. 	    							\n"
+	" Code type:  bad.                                               			 	              \n\n" 
 /****************************************************************************************************/
 ;
 
 
-class SomeClass
-{
-    public:
-	void doSomething()
-	{
-		cout << "Did something" << endl;
-	}
-};
-
-
-
 int32_t main()
 {
-	cout << sInfo << endl;	
+	cout << sInfo << endl;
 
-	auto up(make_unique<SomeClass>()); // Good: using make func
-	up->doSomething();
+	SomeClass s;	
+	s.ouputData();
 
-	auto sp(make_shared<SomeClass>()); // Good: using make func
-	sp->doSomething();
-	
 	return 0;
 } 
