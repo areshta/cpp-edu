@@ -26,7 +26,7 @@ public:
 MyString moveDemo()
 {
     MyString ms {"moveDemo function"};
-    return ms; // Bad: operation withot move
+    return ms; // Bad: operation withot move. Fanatstic issue: no constructurs output. All is working.
 }
 
 
