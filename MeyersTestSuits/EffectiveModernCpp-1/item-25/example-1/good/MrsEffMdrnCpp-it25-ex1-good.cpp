@@ -16,11 +16,11 @@ using std::string;
 using std::move;
 
 const string sInfo =
-/*****************************************************************************************************/
-	" Book:       Effective Modern C++. The first edition.                     			            \n"
-	" Item: #25.  Example 1. ...                                 \n"
-	" Code type:  good.                                               			 	              \n\n" 
-/****************************************************************************************************/
+/*******************************************************************************************************/
+	" Book:       Effective Modern C++. The first edition.                     			                \n"
+	" Item: #25.  Example 2. Use std::move on rvalue references, std::forward on universal references   \n"
+	" Code type:  good.                                               			 	                    \n\n" 
+/*******************************************************************************************************/
 ;
 
 class SomeClass
