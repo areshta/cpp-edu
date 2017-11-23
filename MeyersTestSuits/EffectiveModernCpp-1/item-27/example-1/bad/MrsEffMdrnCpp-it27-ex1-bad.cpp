@@ -8,76 +8,81 @@
 
 #include <iostream>
 #include <string>
-#include <utility>
-#include <set>
-#include <chrono>
 #include <vector>
 
 using std::cout;
 using std::endl;
 using std::string;
 using std::move;
-using std::multiset;
-//using std::chrono;
 using std::forward;
 using std::vector;
 
 const string sInfo =
 /*****************************************************************************************************/
 	" Book:       Effective Modern C++. The first edition.                     			            \n"
-	" Item: #26.  Example 1. Avoid overloading on universal references.                             \n"
+	" Item: #27.  Example 1. Familiarize yourself with alternatives to                              \n"
+    "                        overloading on universal references                                    \n"
 	" Code type:  bad.                                               			 	              \n\n" 
 /****************************************************************************************************/
 ;
 
-
-multiset<string> gSomeData;
-
-using logtm = std::chrono::time_point<std::chrono::system_clock>; 
-
-void log(const logtm& tm, const string& st)
-{
-	std::time_t now_c = std::chrono::system_clock::to_time_t(tm);
-	cout << now_c << " : " << st << endl;
-}
-
-const string& nameFromIdx(size_t idx)
+const string& nameFromIdx(size_t nId)
 {
 	static vector<string> svData { "Non", "Ann", "Al", "Bill", "Kat", "Willy" };
-	if( idx >= svData.size() )
+	if( nId >= svData.size() )
 	{
-		idx = 0;
+		nId = 0;
 	}
 	
-	return svData[idx];
+	return svData[nId];
 }
 
-template<typename T>
-void logAndAdd(T&& sData)
+class SomeStr
 {
-	auto now = std::chrono::system_clock::now();
-	log(now, sData);
-	gSomeData.emplace(forward<T>(sData));
-}
+public:
+    template
+    < 
+        typename T,
+        typename =  std::enable_if_t
+                <
+                    !std::is_base_of<SomeStr, std::decay_t<T>>::value // Bad: '!std::is_integral<std::remove_reference_t<T>>::value' is absent                                        
+                >
+    >
+    explicit SomeStr(T&& str)
+		: m_sStr (std::forward<T>(str))
+	{
+		static_assert(
+			std::is_constructible<std::string, T>::value,
+			"Error: constructor SomeClass(T&& n) cann't convert income parameter to a string"
+		);	    
+	}
 
-void logAndAdd(size_t idx) 
-{
-	auto now = std::chrono::system_clock::now();
-	string sData = nameFromIdx(idx);
-	log(now, sData);
-	gSomeData.emplace(sData);
-}
+	SomeStr( size_t nId):
+		m_sStr( nameFromIdx(nId) )
+	{
+	}
+
+	void out()
+	{
+		cout << "Some Str: " << m_sStr << endl;
+ 	}
+
+private:
+	string m_sStr;
+};
+
+
 
 int32_t main()
 {
 	cout << sInfo << endl;
 
-	string sName("John"); 
-	logAndAdd(sName);
-	logAndAdd(string("Peppy")); 
-	logAndAdd("Abdula"); 
-	logAndAdd(1); 	// Bad. Copiler error. "int" will be pass to "logAndAdd(T&& sData)".
-					// static_cast<size_t>(1) can fix it.
+	SomeStr s1("John"); 
+	s1.out();
+	SomeStr s2(string("Peppy")); 
+	s2.out();
+	SomeStr s3( static_cast<size_t>(1) ); // Bad. Situation with conversion can be fixed in 'SomeStr(T&& str)'
+	s3.out(); 
 	
 	return 0;
 } 

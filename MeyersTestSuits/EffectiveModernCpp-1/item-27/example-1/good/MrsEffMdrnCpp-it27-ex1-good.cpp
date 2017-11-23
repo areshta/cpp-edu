@@ -8,16 +8,12 @@
 
 #include <iostream>
 #include <string>
-#include <utility>
-#include <set>
-#include <chrono>
 #include <vector>
 
 using std::cout;
 using std::endl;
 using std::string;
 using std::move;
-using std::multiset;
 using std::forward;
 using std::vector;
 
@@ -30,9 +26,18 @@ const string sInfo =
 /****************************************************************************************************/
 ;
 
+const string& nameFromIdx(size_t nId)
+{
+	static vector<string> svData { "Non", "Ann", "Al", "Bill", "Kat", "Willy" };
+	if( nId >= svData.size() )
+	{
+		nId = 0;
+	}
+	
+	return svData[nId];
+}
 
-
-class SomeClass 
+class SomeStr
 {
 public:
     template
@@ -40,70 +45,46 @@ public:
         typename T,
         typename =  std::enable_if_t
                 <
-                    !std::is_base_of<Person, std::decay_t<T>>::value
+                    !std::is_base_of<SomeStr, std::decay_t<T>>::value
                     &&
                     !std::is_integral<std::remove_reference_t<T>>::value
                 >
     >
-    explicit Person(T&& n)
-: name(std::forward<T>(n))
-{
-// assert that a std::string can be created from a T object
-static_assert(
-std::is_constructible<std::string, T>::value,
-"Parameter n can't be used to construct a std::string"
-);
-… // the usual ctor work goes here
-}
-… // remainder of Person class (as before)
+    explicit SomeStr(T&& str)
+		: m_sStr (std::forward<T>(str))
+	{
+		static_assert(
+			std::is_constructible<std::string, T>::value,
+			"Error: constructor SomeClass(T&& n) cann't convert income parameter to a string"
+		);	    
+	}
+
+	SomeStr( size_t nId):
+		m_sStr( nameFromIdx(nId) )
+	{
+	}
+
+	void out()
+	{
+		cout << "Some Str: " << m_sStr << endl;
+ 	}
+
+private:
+	string m_sStr;
 };
 
-multiset<string> gSomeData;
 
-using logtm = std::chrono::time_point<std::chrono::system_clock>; 
-
-void log(const logtm& tm, const string& st)
-{
-	std::time_t now_c = std::chrono::system_clock::to_time_t(tm);
-	cout << now_c << " : " << st << endl;
-}
-
-const string& nameFromIdx(size_t idx)
-{
-	static vector<string> svData { "Non", "Ann", "Al", "Bill", "Kat", "Willy" };
-	if( idx >= svData.size() )
-	{
-		idx = 0;
-	}
-	
-	return svData[idx];
-}
-
-template<typename T>
-void logAndAdd(T&& sData)
-{
-	auto now = std::chrono::system_clock::now();
-	log(now, sData);
-	gSomeData.emplace(forward<T>(sData));
-}
-
-void logAndAdd(size_t idx) 
-{
-	auto now = std::chrono::system_clock::now();
-	string sData = nameFromIdx(idx);
-	log(now, sData);
-	gSomeData.emplace(sData);
-}
 
 int32_t main()
 {
 	cout << sInfo << endl;
 
-	string sName("John"); 
-	logAndAdd(sName);
-	logAndAdd(string("Peppy")); 
-	logAndAdd("Abdula"); 
-	logAndAdd( static_cast<size_t>(1) );
+	SomeStr s1("John"); 
+	s1.out();
+	SomeStr s2(string("Peppy")); 
+	s2.out();
+	SomeStr s3(1);
+	s3.out(); 
 	
 	return 0;
 } 
