@@ -8,53 +8,65 @@
 
 #include <iostream>
 #include <string>
+#include <future>
+#include <chrono>
 
 using std::cout;
 using std::endl;
 using std::string;
+using std::async;
+using namespace std::chrono;
+using namespace std::this_thread;
 
 
 const string sInfo =
 /*****************************************************************************************************/
 	" Book:       Effective Modern C++. The first edition.                     			            \n"
-	" Item: #34.  Example 1. Prefer lambdas to std::bind                                            \n"
+	" Item: #36.  Example 1. Specify std::launch::async ifasynchronicity is essential.              \n"
+	"             Please use '-pthread' g++ parameter.                                              \n"
 	" Code type:  good.                                               			 	              \n\n" 
 /****************************************************************************************************/
 ;
 
-using Type1 = int;
-using Type2 = int;
-using Type3 = int;
 
-
-void someViseFunction(Type1 p1, Type2 p2, Type3 p3 )
+template<typename F, typename... Ts>
+inline auto reallyAsync( F&& f, Ts&&... params )
 {
-    cout    << "Vise function" << endl
-            << "Parameter1 = " << p1 << endl      
-            << "Parameter2 = " << p2 << endl      
-            << "Parameter3 = " << p3 << endl;     
+    return std::async(  std::launch::async,
+                        std::forward<F>(f),
+                        std::forward<Ts>(params)...);
 }
 
+int asyncF1()
+{
+    for( int i=0; i<10; ++i)
+    {
+        cout << "asyncF1" << endl;
+        sleep_for(nanoseconds(100000));
+    }
+    return 1;
+}
+
+int asyncF2()
+{
+    for( int i=0; i<10; ++i)
+    {
+        cout << "   asyncF2" << endl;
+        sleep_for(nanoseconds(100000));
+    }
+    return 2;
+}
 
 int32_t main()
 {
 	cout << sInfo << endl;
 
-    cout << "Call #1" << endl; 
-    someViseFunction( 1, 2, 3 );
+    auto fut1 = reallyAsync(asyncF1);  
+    auto fut2 = reallyAsync(asyncF2);  
+	
+    cout << "fut1 = " << fut1.get() << endl;
+    cout << "fut2 = " << fut2.get() << endl;
+    cout << "Exit" << endl;
 
-    Type1 par1 = { 111 };
-    Type2 par2 = { 000 };
-    Type3 par3 = { 333 };
-    
-    auto useViseWith2 =
-        [par1, par3]( auto&& par2 )     // Good: using lambda instead bind
-            {
-                someViseFunction( par1, par2, par3 );
-            };
-
-    cout << "Call #2" << endl; 
-    useViseWith2( 222 );
-  
 	return 0;
 } 

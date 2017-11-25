@@ -8,17 +8,20 @@
 
 #include <iostream>
 #include <string>
+#include <functional>
 
 using std::cout;
 using std::endl;
 using std::string;
+using std::bind;
+using namespace std::placeholders;
 
 
 const string sInfo =
 /*****************************************************************************************************/
 	" Book:       Effective Modern C++. The first edition.                     			            \n"
 	" Item: #34.  Example 1. Prefer lambdas to std::bind                                            \n"
-	" Code type:  good.                                               			 	              \n\n" 
+	" Code type:  bad.                                               			 	              \n\n" 
 /****************************************************************************************************/
 ;
 
@@ -46,12 +49,13 @@ int32_t main()
     Type1 par1 = { 111 };
     Type2 par2 = { 000 };
     Type3 par3 = { 333 };
-    
-    auto useViseWith2 =
-        [par1, par3]( auto&& par2 )     // Good: using lambda instead bind
-            {
-                someViseFunction( par1, par2, par3 );
-            };
+        
+    auto useViseWith2 =             
+            bind( someViseFunction, // Bad: using lamda is better
+                  par1, 
+                  _1,
+                  par3);
+
 
     cout << "Call #2" << endl; 
     useViseWith2( 222 );
