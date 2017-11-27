@@ -42,7 +42,7 @@ int asyncF1()
     for( int i=0; i<10; ++i)
     {
         cout << "asyncF1" << endl;
-        sleep_for(nanoseconds(100000));
+        sleep_for(milliseconds(100));
     }
     return 1;
 }
@@ -52,7 +52,7 @@ int asyncF2()
     for( int i=0; i<10; ++i)
     {
         cout << "   asyncF2" << endl;
-        sleep_for(nanoseconds(100000));
+        sleep_for(milliseconds(100));
     }
     return 2;
 }

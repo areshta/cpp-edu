@@ -10,54 +10,57 @@
 #include <string>
 #include <thread>
 #include <chrono>
+#include <cstdlib>
+#include <ctime>
 
 using std::cout;
 using std::endl;
 using std::string;
 using std::thread;
-using namespace std::this_thread;
 using namespace std::chrono;
+using namespace std::this_thread;
+
 
 const string sInfo =
 /*****************************************************************************************************/
 	" Book:       Effective Modern C++. The first edition.                     			            \n"
-	" Item: #35.  Example 1. Prefer task-based programming to threadbased.                          \n"
+	" Item: #37.  Example 1. Make std::threads unjoinable on all paths.				                \n"
 	"             Please use '-pthread' g++ parameter.                                              \n"
 	" Code type:  bad.                                               			 	              \n\n" 
 /****************************************************************************************************/
 ;
 
-int asyncF1()
+void SomeVise()
 {
     for( int i=0; i<10; ++i)
     {
-        cout << "asyncF1" << endl;
-        sleep_for(milliseconds(100));
+        cout << "SomeVise: " << i << endl;
+        sleep_for( milliseconds( 100 ) );
     }
-    return 1;
 }
 
-int asyncF2()
+
+void doSomthing()
 {
-    for( int i=0; i<10; ++i)
-    {
-        cout << "   asyncF2" << endl;
-        sleep_for(milliseconds(100));
-    }
-    return 2;
+	thread t(SomeVise);
+	
+    std::srand(unsigned(std::time(0)));
+    int random_variable = std::rand();
+
+	if ( random_variable % 2 )
+	{
+		t.join(); //Bad: not all path are unjoinable!
+	}
+	cout << "doSomthing end" << endl;
 }
 
 int32_t main()
 {
 	cout << sInfo << endl;
+	
+	doSomthing();
 
-    thread t1(asyncF1); //Bad: using thread instead std::async
-    thread t2(asyncF2); //Bad: using thread instead std::async 
-
-	t1.join();
-    t2.join();
-
-    cout << "Exit" << endl;
+	cout << "Exit:" << endl;
 
 	return 0;
 } 
