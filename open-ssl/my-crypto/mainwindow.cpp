@@ -50,27 +50,27 @@ void MainWindow::on_genKeysButton_clicked()
 {
 
 
+
+
+
+}
+
+void MainWindow::on_pushButton_MD5_clicked()
+{
     unsigned char digest[MD5_DIGEST_LENGTH];
-    char string[] = "happy";
 
-    MD5((unsigned char*)&string, strlen(string), (unsigned char*)&digest);
+    char *inBuff = mPlainText.toLatin1().data();
 
-    char mdString[33];
 
-    for(int i = 0; i < 16; i++)
-         sprintf(&mdString[i*2], "%02x", (unsigned int)digest[i]);
+    if(mPlainText.toLatin1().size() != 0){
+        MD5(reinterpret_cast<unsigned char*>(inBuff), mPlainText.toLatin1().size(), digest);
+        char mdString[33] = {0};
+        for(int i = 0; i < 16; i++){
+            sprintf(&mdString[i*2], "%02x", (unsigned int)digest[i]);
+        }
+        ui->label_MD5->setText(mdString);
+    } else {
+        ui->label_MD5->setText("No Input!");
+    }
 
-    // printf("md5 digest: %s\n", mdString);
-
-    qDebug() << mdString;
-
-/*
- unsigned char *MD5(const unsigned char *d, unsigned long n,
-                  unsigned char *md);
-
- int MD5_Init(MD5_CTX *c);
- int MD5_Update(MD5_CTX *c, const void *data,
-                  unsigned long len);
- int MD5_Final(unsigned char *md, MD5_CTX *c);
- */
 }

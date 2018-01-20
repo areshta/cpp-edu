@@ -72,9 +72,9 @@
     <property name="geometry">
      <rect>
       <x>60</x>
-      <y>260</y>
+      <y>400</y>
       <width>121</width>
-      <height>25</height>
+      <height>34</height>
      </rect>
     </property>
     <property name="text">
@@ -85,10 +85,36 @@
     <property name="geometry">
      <rect>
       <x>60</x>
-      <y>310</y>
+      <y>450</y>
       <width>561</width>
-      <height>91</height>
+      <height>100</height>
      </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_MD5">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>250</y>
+      <width>89</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>MD5</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_MD5">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>250</y>
+      <width>451</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>no Init</string>
     </property>
    </widget>
   </widget>

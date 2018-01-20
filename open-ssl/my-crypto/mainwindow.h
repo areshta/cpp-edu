@@ -22,6 +22,8 @@ private slots:
 
     void on_genKeysButton_clicked();
 
+    void on_pushButton_MD5_clicked();
+
 private:
     Ui::MainWindow *ui;
 
