@@ -4,10 +4,13 @@
 #include <QFileDialog>
 
 #include <cstring>
+#include <memory>
 
 extern "C"
 {
 #include <openssl/md5.h>
+#include <openssl/rsa.h>
+#include <openssl/pem.h>
 }
 
 
@@ -46,14 +49,6 @@ void MainWindow::on_pushButton_clicked()
 
 }
 
-void MainWindow::on_genKeysButton_clicked()
-{
-
-
-
-
-
-}
 
 void MainWindow::on_pushButton_MD5_clicked()
 {
@@ -72,5 +67,32 @@ void MainWindow::on_pushButton_MD5_clicked()
     } else {
         ui->label_MD5->setText("No Input!");
     }
+
+}
+
+void MainWindow::on_PushButton_genPrivateKey_clicked()
+{
+    const int kBits = 1024;
+    const int kExp = 3;
+    using RSA_ptr = std::unique_ptr<RSA, decltype(&::RSA_free)>;
+    RSA_ptr rsa(RSA_generate_key(kBits, kExp, 0, 0), ::RSA_free);
+
+    /* To get the C-string PEM form: */
+    using BIO_ptr = std::unique_ptr<BIO, decltype(&::BIO_free_all)>;
+    BIO_ptr bio(BIO_new(BIO_s_mem()), ::BIO_free_all);
+    PEM_write_bio_RSAPrivateKey(bio.get(), rsa.get(), NULL, NULL, 0, NULL, NULL);
+
+    int keylen = BIO_pending(bio.get());
+    using char_ptr = std::unique_ptr<unsigned char>;
+    char_ptr pem_key (new unsigned char[keylen+1]); /* Null-terminate */
+    BIO_read(bio.get(), pem_key.get(), keylen);
+
+    ui->publickKeyBrowser->setText(reinterpret_cast<char*>(pem_key.get()));
+    mPrivateKey = reinterpret_cast<char*>(pem_key.get());
+
+}
+
+void MainWindow::on_pushButton_getPublicKey_clicked()
+{
 
 }
