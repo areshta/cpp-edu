@@ -78,10 +78,10 @@
      </rect>
     </property>
     <property name="text">
-     <string>Generate Private Key</string>
+     <string>Generate Keys</string>
     </property>
    </widget>
-   <widget class="QTextBrowser" name="publickKeyBrowser">
+   <widget class="QTextBrowser" name="textBrowser_PrivatKey">
     <property name="geometry">
      <rect>
       <x>60</x>
@@ -117,27 +117,40 @@
      <string>no Init</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_getPublicKey">
-    <property name="geometry">
-     <rect>
-      <x>60</x>
-      <y>420</y>
-      <width>181</width>
-      <height>25</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Get Public Key</string>
-    </property>
-   </widget>
    <widget class="QTextBrowser" name="textBrowser_PublicKey">
     <property name="geometry">
      <rect>
       <x>60</x>
-      <y>460</y>
+      <y>420</y>
       <width>861</width>
       <height>71</height>
      </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_Code">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>550</y>
+      <width>171</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Code</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_CodingStr">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>520</y>
+      <width>171</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>String for RSA coding</string>
     </property>
    </widget>
   </widget>
