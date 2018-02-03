@@ -59,7 +59,7 @@ void MainWindow::on_pushButton_MD5_clicked()
         }
         ui->label_MD5->setText(mdString);
     } else {
-        ui->label_MD5->setText("No Input!");
+        ui->label_MD5->setText("Input field is empty!");
     }
 
 }
