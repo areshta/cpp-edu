@@ -7,15 +7,13 @@
 #include <openssl/err.h>
 
 
-
-
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     rsa(RSA_generate_key(kBits, kExp, 0, 0), ::RSA_free)
 {
     ui->setupUi(this);
+    ui->textBrowser_forEncrypting->setText(mStrForEncrypting);
     mCurDir.setPath("../cpp-edu/open-ssl/my-crypto-data/plain.txt");
 }
 
@@ -94,14 +92,20 @@ void MainWindow::on_PushButton_genPrivateKey_clicked()
 void MainWindow::on_pushButton_Code_clicked()
 {
 
-    QString strForEncrypting = ui->label_CodingStr->text();
-
-    char *msg = strForEncrypting.toLatin1().data();
+    char *msg = mStrForEncrypting.toLatin1().data();
     int len = strnlen(msg,100)+1;
     unsigned char *encrypt = new unsigned char[kBits/8];
 
    int encrypt_len = RSA_public_encrypt(len, reinterpret_cast<unsigned char *>(msg), encrypt, rsa.get(), RSA_PKCS1_OAEP_PADDING);
     qDebug() << "len = " << len << "msg" << msg << "   encrypt_len" << encrypt_len;
+
+    QString sEncrypting;
+    for(int i=0; i<encrypt_len; ++i){
+        sEncrypting += QString::number(static_cast<int>(encrypt[i]));
+        sEncrypting += " ";
+    }
+
+    ui->textBrowser_Encrypted->setText(sEncrypting);
 
     /////RSA_public_encrypt(strlen(msg)+1, (unsigned char*)msg,(unsigned char*)encrypt, keypair, RSA_PKCS1_OAEP_PADDING))
 
@@ -117,6 +121,8 @@ void MainWindow::on_pushButton_Code_clicked()
       } else {
        qDebug() << "Decrypted message:" << decrypt;
    }
+
+   ui->textBrowser_Decrypted->setText(decrypt);
 
     delete[] decrypt;
     delete[] encrypt;

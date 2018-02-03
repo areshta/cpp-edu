@@ -131,7 +131,7 @@
     <property name="geometry">
      <rect>
       <x>60</x>
-      <y>550</y>
+      <y>570</y>
       <width>171</width>
       <height>25</height>
      </rect>
@@ -144,13 +144,69 @@
     <property name="geometry">
      <rect>
       <x>60</x>
-      <y>520</y>
+      <y>530</y>
       <width>171</width>
       <height>17</height>
      </rect>
     </property>
     <property name="text">
-     <string>String for RSA coding</string>
+     <string>String for RSA coding:</string>
+    </property>
+   </widget>
+   <widget class="QTextBrowser" name="textBrowser_forEncrypting">
+    <property name="geometry">
+     <rect>
+      <x>240</x>
+      <y>530</y>
+      <width>256</width>
+      <height>31</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>620</y>
+      <width>91</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Encrypted:</string>
+    </property>
+   </widget>
+   <widget class="QTextBrowser" name="textBrowser_Encrypted">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>610</y>
+      <width>731</width>
+      <height>71</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>710</y>
+      <width>81</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Decrypted:</string>
+    </property>
+   </widget>
+   <widget class="QTextBrowser" name="textBrowser_Decrypted">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>700</y>
+      <width>731</width>
+      <height>41</height>
+     </rect>
     </property>
    </widget>
   </widget>

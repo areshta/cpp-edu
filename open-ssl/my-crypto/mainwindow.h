@@ -41,6 +41,7 @@ private:
     QDir mCurDir;
     QString mPlainText;
     QString mPrivateKey;
+    QString mStrForEncrypting {"String for RSA encripting"};
 
 private:
     const int kBits = 1024;
