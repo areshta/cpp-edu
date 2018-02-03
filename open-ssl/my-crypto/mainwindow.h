@@ -44,8 +44,8 @@ private:
     QString mStrForEncrypting {"String for RSA encripting"};
 
 private:
-    const int kBits = 1024;
-    const int kExp = 3;
+    static constexpr int kBits  {1024};
+    static constexpr int kExp   {3};
 
     using RSA_ptr = std::unique_ptr<RSA, decltype(&::RSA_free)>;
     RSA_ptr rsa;

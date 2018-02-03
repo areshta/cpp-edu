@@ -5,6 +5,10 @@
 
 #include <cstring>
 #include <openssl/err.h>
+#include <array>
+#include <string>
+#include <iomanip>
+#include <sstream>
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -47,17 +51,17 @@ void MainWindow::on_pushButton_clicked()
 
 void MainWindow::on_pushButton_MD5_clicked()
 {
-    unsigned char digest[MD5_DIGEST_LENGTH];
-
-    char *inBuff = mPlainText.toLatin1().data();
-
     if(mPlainText.toLatin1().size() != 0){
-        MD5(reinterpret_cast<unsigned char*>(inBuff), mPlainText.toLatin1().size(), digest);
-        char mdString[33] = {0};
-        for(int i = 0; i < 16; i++){
-            sprintf(&mdString[i*2], "%02x", (unsigned int)digest[i]);
+        std::array<unsigned char, MD5_DIGEST_LENGTH> aDigest;
+        MD5(reinterpret_cast<unsigned char*>(mPlainText.toLatin1().data()),
+            mPlainText.toLatin1().size(),
+            aDigest.data());
+        std::stringstream stream;
+        stream.str().reserve(MD5_DIGEST_LENGTH*2);
+        for(auto dg: aDigest){
+           stream << std::hex << std::setprecision(2) << static_cast<int>(dg);
         }
-        ui->label_MD5->setText(mdString);
+        ui->label_MD5->setText(stream.str().c_str());
     } else {
         ui->label_MD5->setText("Input field is empty!");
     }
@@ -91,39 +95,36 @@ void MainWindow::on_PushButton_genPrivateKey_clicked()
 
 void MainWindow::on_pushButton_Code_clicked()
 {
+    std::array<unsigned char, kBits/8>(encrypt);
 
-    char *msg = mStrForEncrypting.toLatin1().data();
-    int len = strnlen(msg,100)+1;
-    unsigned char *encrypt = new unsigned char[kBits/8];
-
-   int encrypt_len = RSA_public_encrypt(len, reinterpret_cast<unsigned char *>(msg), encrypt, rsa.get(), RSA_PKCS1_OAEP_PADDING);
-    qDebug() << "len = " << len << "msg" << msg << "   encrypt_len" << encrypt_len;
+    int txtStrLen = mStrForEncrypting.toLatin1().size();
+    int encrypt_len = RSA_public_encrypt(
+               txtStrLen,
+               reinterpret_cast<unsigned char *>(mStrForEncrypting.toLatin1().data()),
+               encrypt.data(),
+               rsa.get(),
+               RSA_PKCS1_OAEP_PADDING);
 
     QString sEncrypting;
-    for(int i=0; i<encrypt_len; ++i){
-        sEncrypting += QString::number(static_cast<int>(encrypt[i]));
+    for(auto ch: encrypt){
+        sEncrypting += QString::number(static_cast<int>(ch));
         sEncrypting += " ";
     }
 
     ui->textBrowser_Encrypted->setText(sEncrypting);
 
-    /////RSA_public_encrypt(strlen(msg)+1, (unsigned char*)msg,(unsigned char*)encrypt, keypair, RSA_PKCS1_OAEP_PADDING))
-
-
-   char *decrypt = (char*)malloc(kBits/8);
-   if(RSA_private_decrypt(encrypt_len, (unsigned char*)encrypt, (unsigned char*)decrypt,
-                          rsa.get(), RSA_PKCS1_OAEP_PADDING) == -1) {
+   std::array<unsigned char, kBits/8>(decrypt) {0};
+   if(RSA_private_decrypt(
+               encrypt_len,
+               encrypt.data(),
+               decrypt.data(),
+               rsa.get(), RSA_PKCS1_OAEP_PADDING) == -1) {
       ERR_load_crypto_strings();
-      char err[256];
-      ERR_error_string(ERR_get_error(), err);
-      qDebug() << "Error decrypting message:" << err;
+      std::array<char, 256>(err) {0};
+      ERR_error_string(ERR_get_error(), err.data());
+      qDebug() << "Error decrypting message:" << err.data();
       ERR_free_strings();
-      } else {
-       qDebug() << "Decrypted message:" << decrypt;
+   } else {
+       ui->textBrowser_Decrypted->setText(reinterpret_cast<char*>(decrypt.data()));
    }
-
-   ui->textBrowser_Decrypted->setText(decrypt);
-
-    delete[] decrypt;
-    delete[] encrypt;
 }
