@@ -8,23 +8,14 @@ using namespace std::chrono;
 //some class, does not matter what it does.
 class A
 {
-public:
-    void inc()
-    {
-        ++counter;
-    }
-private:
-    size_t counter {0};
 };
 
 void f_val(shared_ptr<A> a)
 {
-    //a->inc();
 }
 
 void f_ref(shared_ptr<A>& a)
 {
-    //a->inc();
 }
 
 int main()
@@ -33,11 +24,9 @@ int main()
     auto spa = std::make_shared<A>();
 
     milliseconds time1 = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
-
     for( size_t i=0; i < sz; ++i){
         f_val(spa);
     }
-
     milliseconds time2 = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 
     for( size_t i=0; i < sz; ++i){
@@ -45,7 +34,6 @@ int main()
     }
 
     milliseconds time3 = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
-
     int d1 = (time2-time1).count();
     int d2 = (time3-time2).count();
 
