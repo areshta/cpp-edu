@@ -1,0 +1,2 @@
+uninitvar:../cppcheck-play-src/sca_cpp.cpp:143
+

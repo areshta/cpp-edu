@@ -1,0 +1,7 @@
+[../cppcheck-play-src/sca_cpp.cpp:81]: (error) Buffer is accessed out of bounds.
+[../cppcheck-play-src/sca_cpp.cpp:51]: (error) Class 'baseA' which is inherited by class 'childB' does not have a virtual destructor.
+[../cppcheck-play-src/sca_cpp.cpp:49]: (error) Memory leak: pB
+[../cppcheck-play-src/sca_cpp.cpp:54]: (error) Mismatching allocation and deallocation: baseA::pA
+[../cppcheck-play-src/sca_cpp.cpp:56]: (error) Mismatching allocation and deallocation: baseA::pC
+[../cppcheck-play-src/sca_cpp.cpp:62]: (error) Dangerous usage of c_str(). The value returned by c_str() is invalid after this call.
+[../cppcheck-play-src/sca_cpp.cpp:143]: (error) Uninitialized variable: a
