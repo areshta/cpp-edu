@@ -23,6 +23,8 @@ enum En5 {a5};
 enum En6 {a6, b6, c6, d6, e6, f6, g6, h6, i6, j6, k6};
 enum En7 {a7=-10, b7, c7=-1, d7, e7};
 
+enum EnStep1 {aa , bb, cc, dd,  ee, ff };
+
 template<typename... Args>
 constexpr int enum_size(Args... args)
 {
@@ -67,6 +69,25 @@ constexpr int enum_min(T first, Args... args)
    return first < enum_min(args...) ? first : enum_min(args...);
 }
 
+//template<typename T>
+//constexpr bool enum_step1(T x)
+//{
+//   return x;
+//}
+//
+//template<typename T>
+//constexpr bool enum_step_pare(T x1, T x2)
+//{
+//   return x2-x1 == 1;
+//}
+//
+//template<typename T, typename... Args>
+//constexpr bool enum_step1(T first, Args... args)
+//{
+//   return (enum_step_pare(first, enum_step1(args...))) && enum_step1(args...);
+//}
+//
+
 template<typename... Args>
 constexpr bool enumIsArrayable(Args... args)
 {
@@ -91,10 +112,11 @@ typedef std::conditional<enumIsArrayable(__VA_ARGS__) , \
  
 int main(int argc, char** argv) {
 
-   constexpr int min_value = enumIsArrayable(a7, b7, c7, d7, e7);
+   constexpr int min_value = enumIsArrayable(aa , bb, cc, dd,  ee, ff);
    
    cout << "No negative " << enum_no_negative(a7, b7, c7, d7, e7) << endl;
    cout << "Enum min a7...e7 " << enum_min(a7, b7, c7, d7, e7)<< endl;
+//   cout << "Enum step1 aa...ff " << enum_step1(aa , bb, cc, dd,  ee, ff)<< endl;
    
    cout << "size = " << enum_size(a,b,c,d,e)<< endl;
    cout << "summ = " << enum_summ(a,b,c,d,e)<< endl;
@@ -105,6 +127,8 @@ int main(int argc, char** argv) {
    cout << "Good: isArrayable a3...d3 " << enumIsArrayable(a3, b3, c3, d3)<< endl;
    cout << "Bad: isArrayable a7...e7 " << enumIsArrayable(a7, b7, c7, d7, e7)<< endl;
    cout << "Bad: isArrayable a7...e7 " << min_value << endl;
+   
+   
    
    // solution using conditional typedef
    
