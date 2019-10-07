@@ -1,6 +1,5 @@
 # This file is used to ignore files which are generated
 # ----------------------------------------------------------------------------
-
 *.out
 *~
 *.autosave
@@ -82,3 +81,4 @@ Thumbs.db
 /some_cpp_examples/static_array_init/dist/
 /some_cpp_examples/vect_deep_copy/build/
 /some_cpp_examples/vect_deep_copy/dist/
+
