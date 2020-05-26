@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
 
        int ret = luaL_dofile(l,"/home/alexey/working/cpp-edu/lua/run_module/module.lua");
        if(ret > 0){
-            cout << "lua exec error\n";
+            cout << "lua exec error 2\n";
         }
         lua_getglobal(l,"f");
         lua_pcall(l, 0, 0, 0);
