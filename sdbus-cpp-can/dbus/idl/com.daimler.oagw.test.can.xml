@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<node name="/com/daimler/oagw/test/can">
+    <interface name="com.daimler.oagw.test.Can">
+        <method name="CANSignal">
+            <arg type="s" name="name" direction="in" />
+            <arg type="i" name="value" direction="in" />
+            <arg type="b" name="retCode" direction="out" />
+        </method>
+    </interface>
+</node>
